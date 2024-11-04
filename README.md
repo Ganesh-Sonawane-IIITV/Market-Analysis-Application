@@ -85,7 +85,7 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY")
      2. Enter the company name and ticker symbol in the input form.
      3. Submit the form to receive a generated market analysis summary.
 ## Video demo
-  [Watch Video](market-analysis-apllication/Screen & Camera Recording - Nov 4, 2024-VEED (1).mp4)
+  [Watch Video](https://drive.google.com/file/d/1BwiqEAd27ylaIJZTOoiVaTB-DcccJbpL/view?usp=sharing)
 
    
 
