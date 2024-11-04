@@ -1,0 +1,235 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Market Analysis Results</title>
+</head>
+
+<body>
+    <header>
+        <h1>Market Analysis Summary</h1>
+    </header>
+    <div class="container results">
+        <div class="summary">
+            <pre>{{ summary }}</pre>
+        </div>
+        <a href="/" class="button">Go Back</a>
+    </div>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Analysis Results</title>
+    <!-- Include marked library for markdown parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <style>
+         :root {
+            --primary-color: #c7e382;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --background-color: #f8f9fa;
+            --text-color: #070707;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .results {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary {
+            margin-bottom: 2rem;
+        }
+        /* Markdown content styles */
+        
+        .summary h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .summary h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .summary h3 {
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+        }
+        
+        .summary ul,
+        .summary ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .summary li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary strong {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        
+        .summary p {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+        
+        .summary pre {
+            display: none;
+            /* Hide the original pre tag */
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: #30d721;
+        }
+        
+        @media print {
+            .button {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            .results {
+                box-shadow: none;
+            }
+        }
+        /* ... previous styles remain the same ... */
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .header-logo {
+            height: 50px;
+            width: auto;
+            vertical-align: middle;
+        }
+        /* Responsive header for mobile devices */
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1.5rem 0;
+            }
+            .header-logo {
+                height: 40px;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Company Logo" class="header-logo">
+        <h1>Market Analysis Summary</h1>
+    </header>
+    <div class="container results">
+        <div class="summary">
+            <pre id="markdown-content">{{ summary }}</pre>
+            <div id="rendered-content"></div>
+        </div>
+        <div style="text-align: center;">
+            <a href="/index.html" class="button">Go Back</a>
+            <button onclick="window.print()" class="button">Print Report</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to safely handle markdown rendering
+        function renderMarkdown() {
+            try {
+                // Get the markdown content
+                const markdownContent = document.getElementById('markdown-content').textContent;
+
+                // Configure marked options for better security and rendering
+                marked.setOptions({
+                    headerIds: false, // Disable header IDs for security
+                    mangle: false, // Disable mangling for security
+                    sanitize: true, // Enable sanitization
+                    breaks: true, // Enable line breaks
+                    gfm: true, // Enable GitHub Flavored Markdown
+                });
+
+                // Convert markdown to HTML
+                const htmlContent = marked.parse(markdownContent);
+
+                // Insert the rendered HTML
+                document.getElementById('rendered-content').innerHTML = htmlContent;
+
+                // Hide the original pre tag containing raw markdown
+                document.getElementById('markdown-content').style.display = 'none';
+            } catch (error) {
+                console.error('Error rendering markdown:', error);
+                // Show error message in the rendered content div
+                document.getElementById('rendered-content').innerHTML =
+                    '<p style="color: red;">Error rendering content. Please try again.</p>';
+            }
+        }
+
+        // Render markdown when the page loads
+        document.addEventListener('DOMContentLoaded', renderMarkdown);
+    </script>
+</body>
+
+</html>

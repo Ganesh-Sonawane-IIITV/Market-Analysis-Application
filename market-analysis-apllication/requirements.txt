@@ -1,0 +1,5 @@
+Flask
+yfinance
+pandas
+serpapi
+google-generativeai
